@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "pybo",  # dev_2 pybo 파일을 미리 메모리에 할당. pybo.apps.PyboConfig와 동일.
 ]
 
 MIDDLEWARE = [
