@@ -227,14 +227,14 @@ class AggregateTestCase(TestCase):  # 테스트용 클래스. 데이터베이스
         #                           WHERE a.question_id = question.id);
         # F()를 사용하면 Python 메모리를 사용하지 않고, DB에서 직접 연산 수행
         # JOIN과 GROUP BY 없이도 데이터를 효율적으로 업데이트 가능
-        Question.objects.update(latest_answer_date=F("answers__create_date"))
+        # Question.objects.update(latest_answer_date=F("answers__create_date"))
 
-    # def test_sum_answer_ids(self):
-    #     """
-    #     Test for Sum aggregation on answer ids
-    #     """
-    #     result = Answer.objects.aggregate(Sum("id"))
-    #     # SQL 쿼리:
-    #     # SELECT SUM(id) FROM Answer;
-    #     print(result)
-    #     self.assertEqual(result["id__sum"], 15)
+    def test_sum_answer_ids(self):
+        """
+        Test for Sum aggregation on answer ids
+        """
+        result = Answer.objects.aggregate(Sum("id"))
+        # SQL 쿼리:
+        # SELECT SUM(id) FROM Answer;
+        print(result)
+        self.assertEqual(result["id__sum"], 15)
