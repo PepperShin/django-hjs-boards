@@ -10,8 +10,14 @@ class Question(models.Model):
     content = models.TextField()  # 글자 수에 제한이 없는 텍스트는 TextField를 사용한다.
     create_date = models.DateTimeField()
 
+    def __str__(self):
+        return self.subject
+
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)  # 1:n
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name="answers"
+    )
+    # 1:n question의 데이터 타입은 Question. question_id 컬럼이 된다.
     content = models.TextField()
     create_date = models.DateTimeField()
