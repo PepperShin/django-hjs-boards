@@ -3,4 +3,6 @@ from django.urls import include, path
 
 from pybo import views
 
-urlpatterns = []
+urlpatterns = [
+    path("", views.index),
+]

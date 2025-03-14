@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from pybo.models import Question
+
 # Create your views here.
 
 
+# http://127.0.0.1:8000/pybo/
 def index(request):
-    return HttpResponse(
-        "<h1>안녕하세요. 게시판을 만들겠습니다.</h1> </br>게시판을 만들겠습니다."
-    )
-
-
-def hello(request):
-    return HttpResponse("<h1>hello world</h1>")
+    question_list = Question.objects.order_by("-create_date")
+    context = {"question_list": question_list}
+    return render(request, "pybo/question_list.html", context)
