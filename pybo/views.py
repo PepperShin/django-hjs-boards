@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
-
 from pybo.models import Question
+from django.utils import timezone
 
 # Create your views here.
 
@@ -20,3 +20,12 @@ def detail(request, question_id):
     )  # 페이지를 404로 바꿔주는 함수
     context = {"question": question}
     return render(request, "pybo/question_detail.html", context)
+
+
+def answer_create(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    question.answers.create(  # related_name이 설정이 되어있지 않을때는 question.answer_set
+        content=request.POST.get("content"), create_date=timezone.now()
+    )  # 역방향 참조
+
+    return redirect("pybo:detail", question_id=question_id)
