@@ -27,5 +27,8 @@ def answer_create(request, question_id):
     question.answers.create(  # related_name이 설정이 되어있지 않을때는 question.answer_set
         content=request.POST.get("content"), create_date=timezone.now()
     )  # 역방향 참조
+    # 정방향 참조
+    # answer = Answer(question=question, content=content, create_date=timezone.now())
+    # answer.save()
 
     return redirect("pybo:detail", question_id=question_id)

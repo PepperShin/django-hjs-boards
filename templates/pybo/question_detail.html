@@ -4,6 +4,14 @@
 <div>
     {{question.content}}
 </div>
+<h5>{{question.answers.count}}개의 답변이 있습니다.</h5>
+<div>
+    <ul>
+        {% for answer in question.answers.all %}
+            <li>{{answer.content}}</li>
+        {% endfor %}
+    </ul>
+</div>
 <form action="{% url 'pybo:answer_create' question.id %}" method="post">
     {% csrf_token %}
     <textarea name="content" id="content" rows="15"></textarea>
