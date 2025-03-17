@@ -116,7 +116,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# http://127.0.0.1:8000/static/
 STATIC_URL = "static/"
+# C:\Users\peep1\OneDrive\바탕 화면\멋사 파이썬\vscode\장고-프로젝트\django-hjs-boards\static
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    # 여러개 지정 시 여러 폴더 다 참조
+    # BASE_DIR / "static2",
+    # BASE_DIR / "static3",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

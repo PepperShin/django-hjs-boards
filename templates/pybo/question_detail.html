@@ -1,3 +1,8 @@
+{% load static %}
+<!-- http://127.0.0.1:8000/static/style.css -->
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+<img src="{% static 'image.png' %}">
 <h1>
     {{question.subject}}
 </h1>
