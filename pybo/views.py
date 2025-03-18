@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponse
-from pybo.forms import QuestionForm
+from django.http import HttpResponse, HttpResponseNotAllowed
+from pybo.forms import AnswerForm, QuestionForm
 from pybo.models import Question
 from django.utils import timezone
 
@@ -23,16 +23,22 @@ def detail(request, question_id):
     return render(request, "pybo/question_detail.html", context)
 
 
-def answer_create(request, question_id):
+def answer_create(request, question_id):  # dev_9
     question = get_object_or_404(Question, pk=question_id)
-    question.answers.create(  # related_name이 설정이 되어있지 않을때는 question.answer_set
-        content=request.POST.get("content"), create_date=timezone.now()
-    )  # 역방향 참조
-    # 정방향 참조
-    # answer = Answer(question=question, content=content, create_date=timezone.now())
-    # answer.save()
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.create_date = timezone.now()
+            answer.question = question  # question 객체 입력
+            answer.save()
+            return redirect("pybo:detail", question_id=question.id)
 
-    return redirect("pybo:detail", question_id=question_id)
+    else:
+        return HttpResponseNotAllowed("Only Post is possible")
+
+    context = {"question": question, "form": form}
+    return render(request, "pybo/question_detail.html", context)
 
 
 # path("question/create/", views.question_create, name="question_create"),
