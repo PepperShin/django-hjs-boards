@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
+from pybo.forms import QuestionForm
 from pybo.models import Question
 from django.utils import timezone
 
@@ -32,3 +33,9 @@ def answer_create(request, question_id):
     # answer.save()
 
     return redirect("pybo:detail", question_id=question_id)
+
+
+# path("question/create/", views.question_create, name="question_create"),
+def question_create(request):
+    form = QuestionForm()
+    return render(request, "pybo/question_form.html", {"form": form})
