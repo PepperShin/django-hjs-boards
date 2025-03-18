@@ -47,4 +47,6 @@ def question_create(request):
 
     else:
         form = QuestionForm()
-        return render(request, "pybo/question_form.html", {"form": form})
+
+    context = {"form": form}
+    return render(request, "pybo/question_form.html", context)
