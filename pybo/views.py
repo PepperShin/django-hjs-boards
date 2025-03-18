@@ -37,5 +37,14 @@ def answer_create(request, question_id):
 
 # path("question/create/", views.question_create, name="question_create"),
 def question_create(request):
-    form = QuestionForm()
-    return render(request, "pybo/question_form.html", {"form": form})
+    if request.method == "POST":
+        form = QuestionForm(request.POST)
+        if form.is_valid():  # form 태그로 받은 데이터 유효성 검사
+            question = form.save(commit=False)
+            question.create_date = timezone.now()
+            question.save()
+            return redirect("pybo:index")
+
+    else:
+        form = QuestionForm()
+        return render(request, "pybo/question_form.html", {"form": form})

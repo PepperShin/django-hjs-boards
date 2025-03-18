@@ -3,8 +3,10 @@
 {% block stuff %}
 <div class="container">
     <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-    <form method="post">
+    <form method="post"> <!-- action을 적지 않으면 현재 페이지에 리다이렉션 -->
         {% csrf_token %}
+        {{form.as_p}}
+        <!-- HTML 코드를 자동으로 생성 -->
 
 
         <button type="submit" class="btn btn-primary">저장하기</button>
