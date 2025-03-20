@@ -62,6 +62,20 @@ class DatabaseTestCase(TransactionTestCase):
             create_date=timezone.now(),
         )
 
+    # def test_departments_exist(self):
+    #     self.assertEqual(Department.objects.count(), 4)
+
+    # def test_employees_exist(self):
+    #     self.assertEqual(Employee.objects.count(), 14)
+
+    # def test_salary_grades_exist(self):
+    #     self.assertEqual(SalaryGrade.objects.count(), 5)
+
+    # def test_employee_salary_range(self):
+    #     for grade in SalaryGrade.objects.all():
+    #         employees = Employee.objects.filter(sal__gte=grade.losal, sal__lte=grade.hisal)
+    #         self.assertTrue(employees.exists())
+
 
 # 아래의 명령어 실행
 # python manage.py shell

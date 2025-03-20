@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "pybo",  # dev_2 pybo 파일을 미리 메모리에 할당. pybo.apps.PyboConfig와 동일.
+    "pybo",  # dev_2
+    "common",  # dev_13
 ]
 
 MIDDLEWARE = [
@@ -52,10 +53,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+# 모든 앱이 공통으로 사용할 템플릿 디렉터리 - /templates
+# pybo 앱이 사용할 템플릿 디렉터리 - /templates/pybo
+# common 앱이 사용할 템플릿 디렉터리 - /templates/common
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # 처음에는 지정되어 있지 않다.
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -116,17 +120,40 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# 스태틱(static) 디렉터리
+# URL 상의 스택틱 폴더를 ,로컬(내컴퓨터)의 파일 폴더와 매칭 시키는 부분
+
 # http://127.0.0.1:8000/static/
 STATIC_URL = "static/"
-# C:\Users\peep1\OneDrive\바탕 화면\멋사 파이썬\vscode\장고-프로젝트\django-hjs-boards\static
+# D:\멋사\장고-프로젝트\django-hjs-boards\static
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    # 여러개 지정 시 여러 폴더 다 참조
-    # BASE_DIR / "static2",
-    # BASE_DIR / "static3",
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# django.db.backends.logger 설정 (실시간 SQL 로깅) # dev_2
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django.db.backends": {
+#             "level": "DEBUG",
+#             "handlers": ["console"],
+#         },
+#     },
+# }
+
+# http://127.0.0.1:8000/accounts/profile/ => 로그인 성공시 디폴트 URL
+# 로그인 성공후 이동하는 URL
+# dev_13
+LOGIN_REDIRECT_URL = '/'
