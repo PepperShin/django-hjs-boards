@@ -261,3 +261,27 @@ class AggregateTestCase(TestCase):
         )
         for q in questions:
             print(q.subject, q.answer_count)
+
+    def test_session(self):
+        from django.contrib.sessions.models import Session
+        from django.contrib.sessions.backends.db import SessionStore
+
+        # DB에 존재하는 세션 키 조회
+        session_keys = Session.objects.values_list("session_key", flat=True)
+        print(list(session_keys))  # 저장된 모든 세션 키 출력
+
+        # 특정 세션 키가 존재하는지 확인
+        session_key = "eba9wrcsvp9ihv2iwe8nw1ek4blbuye7"
+        if session_key in session_keys:
+            session = Session.objects.get(session_key=session_key)
+            print("세션 존재:", session)
+        else:
+            print("세션이 존재하지 않습니다.")
+
+        # 특정 세션 키 조회
+        session_key = "eba9wrcsvp9ihv2iwe8nw1ek4blbuye7"  # 실제 저장된 session_key 입력
+        session = Session.objects.get(session_key=session_key)
+
+        # 세션 데이터 복호화
+        session_data = SessionStore(session_key=session_key).load()
+        print(session_data)  # {'username': 'DjangoUser'}
