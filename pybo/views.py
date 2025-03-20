@@ -3,14 +3,24 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from pybo.forms import AnswerForm, QuestionForm
 from pybo.models import Question
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 
 # http://127.0.0.1:8000/pybo/
 def index(request):
+
+    page = request.GET.get("page", "1")  # 페이지 넘어오는게 없으면 1번이 디폴트
+
     question_list = Question.objects.order_by("-create_date")
-    context = {"question_list": question_list}
+
+    # from django.core.paginator import Paginator
+    paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+
+    context = {"question_list": page_obj}
+    # context = {"question_list": question_list}
     return render(request, "pybo/question_list.html", context)
 
 
