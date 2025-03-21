@@ -6,11 +6,14 @@ from pybo.models import Answer, Question
 from django.utils import timezone
 from django.core.paginator import Paginator
 
+
 # Create your views here.
 
 
 # http://127.0.0.1:8000/pybo
 def index(request):
+
+    print(request.user)
     # ?page=4
     page = request.GET.get("page", "1")  # 페이지
 
@@ -81,9 +84,7 @@ def question_create(request):
     return render(request, "pybo/question_form.html", context)
 
 
-from django.http import HttpResponse
-
-
+# from django.http import HttpResponse
 def set_cookie_view(request):
     """쿠키 설정"""
     response = HttpResponse("쿠키가 설정되었습니다.")
@@ -105,18 +106,6 @@ def delete_cookie_view(request):
 
 
 def set_session_view(request):
-
-    from django.contrib.sessions.models import Session
-    from django.contrib.sessions.backends.db import SessionStore
-
-    # 특정 세션 키 조회
-    session_key = "845fap6o3dpt4n8bzzx231lc03ctgorm"  # 실제 저장된 session_key 입력
-    session = Session.objects.get(session_key=session_key)
-
-    # 세션 데이터 복호화
-    session_data = SessionStore(session_key=session_key).load()
-    print(session_data)  # {'username': 'DjangoUser'}
-
     """세션 설정"""
     request.session["username"] = "DjangoUser"  # 세션에 값 저장
     request.session.set_expiry(3600)  # 1시간 후 만료 (기본값: 브라우저 종료 시 삭제)
@@ -124,6 +113,20 @@ def set_session_view(request):
 
 
 def get_session_view(request):
+
+    from django.contrib.sessions.models import Session
+    from django.contrib.sessions.backends.db import SessionStore
+
+    # 특정 세션 키 조회
+    session_key = (
+        "zl8mhlueifueb59bzzlykwhuj7nt2vf9"  # 실제 저장된 session_key 입력 제일 최신꺼
+    )
+    session = Session.objects.get(session_key=session_key)
+
+    # 세션 데이터 복호화
+    session_data = SessionStore(session_key=session_key).load()
+    print(session_data)  # {'username': 'DjangoUser'}
+
     """세션 가져오기"""
     username = request.session.get("username", "세션이 없습니다.")
     return HttpResponse(f"세션 값: {username}")
