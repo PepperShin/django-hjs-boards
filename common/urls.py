@@ -13,4 +13,5 @@ urlpatterns = [
         name="login",
     ),  # dev_13
     path("logout/", views.logout_view, name="logout"),
+    path("signup/", views.signup, name="signup"),  # dev_15
 ]
