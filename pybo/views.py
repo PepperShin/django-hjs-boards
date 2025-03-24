@@ -6,6 +6,7 @@ from pybo.models import Answer, Question
 from django.utils import timezone
 from django.core.paginator import Paginator
 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -40,6 +41,7 @@ def detail(request, question_id):
 
 
 # dev_9
+@login_required(login_url="common:login")
 def answer_create(request, question_id):
     """
     pybo 답변등록
@@ -51,6 +53,9 @@ def answer_create(request, question_id):
 
         if form.is_valid():
             answer = form.save(commit=False)
+            answer.author = (
+                request.user
+            )  # 현재 로그인 한 계정의 User 객체 모델 # dev_16
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
@@ -63,6 +68,7 @@ def answer_create(request, question_id):
     return render(request, "pybo/question_detail.html", context)
 
 
+@login_required(login_url="common:login")
 def question_create(request):
 
     print(request.POST.get("content"))
@@ -73,6 +79,7 @@ def question_create(request):
 
         if form.is_valid():
             question = form.save(commit=False)
+            question.author = request.user  # dev_16
             question.create_date = timezone.now()
             question.save()
             return redirect("pybo:index")
