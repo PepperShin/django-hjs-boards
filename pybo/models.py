@@ -14,6 +14,10 @@ class Question(models.Model):
     subject = models.CharField(max_length=100)
     content = models.TextField()  # 글자 수에 제한이 없는 텍스트는 TextField를 사용한다
     create_date = models.DateTimeField()
+    # dev_17
+    # modify_date 칼럼에 null을 허용함
+    # blank=True는 form.is_valid()를 통한 입력 데이터 검증 시 값이 없어도 된다는 의미
+    modify_date = models.DateTimeField(null=True, blank=True)  # 수정 일시
 
     def __str__(self):
         return self.subject
@@ -31,6 +35,7 @@ class Answer(models.Model):
     )
     content = models.TextField()
     create_date = models.DateTimeField()
+    modify_date = models.DateTimeField(null=True, blank=True)  # 수정 일시
 
 
 # q=Question.objects.get(id=4)

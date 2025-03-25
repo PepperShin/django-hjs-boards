@@ -3,6 +3,15 @@
       type="text/css"
       href="{% static 'bootstrap.min.css' %}">
 <div class="container my-3">
+    <!-- message 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+    {% endif %}
     <!-- 질문 -->
     <h2 class="border-bottom py-2">{{ question.subject }}</h2>
     <div class="card my-3">
@@ -13,6 +22,14 @@
                     <div class="mb-2">{{ question.author.username }}</div>
                     <div>{{ question.create_date }}</div>
                 </div>
+            </div>
+            <!--div_17-->
+            <div class="my-3">
+                <!--로그인한 사용자와 글쓴이가 동일한 경우에만 노출-->
+                {% if request.user == question.author %}
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'pybo:question_modify' question.id %}">수정</a>
+                    <a class="delete btn btn-sm btn-outline-secondary" href="javascript:void(0)" data-uri="{% url 'pybo:question_delete' question.id %}">삭제</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -62,3 +79,18 @@
         <input type="submit" value="답변등록" class="btn btn-primary">
     </form>
 </div>
+
+{% block script %}
+<!--dev_17-->
+<script type="text/javascript">
+    {% comment %}위의 a태그 삭제에서 클래스 delete를 호출한다.{% endcomment %}
+    const delete_element = document.getElementsByClassName("delete")
+    Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock script %}
