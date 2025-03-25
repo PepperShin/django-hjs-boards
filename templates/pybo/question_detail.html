@@ -86,7 +86,7 @@
     {% comment %}위의 a태그 삭제에서 클래스 delete를 호출한다.{% endcomment %}
     const delete_element = document.getElementsByClassName("delete")
     Array.from(delete_elements).forEach(function(element) {
-    element.addEventListener('click', function() {
+        element.addEventListener('click', function() {
         if(confirm("정말로 삭제하시겠습니까?")) {
             location.href = this.dataset.uri;
         };

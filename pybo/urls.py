@@ -19,7 +19,7 @@ urlpatterns = [
         name="question_modify",
     ),  # dev_17
     path(
-        "question/modify/<int:question_id>/",
+        "question/delete/<int:question_id>/",
         views.question_delete,
         name="question_delete",
     ),  # dev_17
