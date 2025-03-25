@@ -93,7 +93,7 @@ def question_create(request):
 
 
 # dev_17
-# 답변 수정
+# 글 수정
 @login_required(login_url="common:login")
 def question_modify(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -129,3 +129,27 @@ def question_delete(request, question_id):
 
     question.delete()
     return redirect("pybo:index")
+
+
+# dev_18
+# 질문 수정
+@login_required(login_url="common:login")
+def answer_modify(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+
+    if request.user != answer.author:
+        message.error(request, "수정 권한이 없습니다.")
+        return redirect("pybo:detail", question_id=answer.question.id)
+
+    if request.method == "POST":
+        form = AnswerForm(request.POST, instance=answer)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.modify_date = timezone.now()
+            answer.save()
+            return redirect("pybo:detail", question_id=answer.question.id)
+    else:
+        form = AnswerForm(instance=answer)
+
+    context = {"answer": answer, "form": form}
+    return render(request, "pybo/answer_form.html", context)
