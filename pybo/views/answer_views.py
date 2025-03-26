@@ -73,3 +73,16 @@ def answer_delete(request, answer_id):
         answer.delete()
 
     return redirect("pybo:detail", question_id=answer.question.id)
+
+
+# 추천
+@login_required(login_url="common:login")
+def answer_vote(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+
+    if request.user == answer.author:
+        message.error(request, "본인의 개시물에는 추천할 수 없습니다.")
+    else:
+        answer.voter.add(request.user)
+
+    return redirect("pybo:detail", question_id=answer.question.id)

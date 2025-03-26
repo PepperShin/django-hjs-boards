@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class Question(models.Model):
     # 필드가 null로 저장되는 것을 허용
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE
+        User, on_delete=models.CASCADE, related_name="author_question"
     )  # 사용자 이름을 외래키로 받아오기 # dev_16
     subject = models.CharField(max_length=100)
     content = models.TextField()  # 글자 수에 제한이 없는 텍스트는 TextField를 사용한다
@@ -18,6 +18,8 @@ class Question(models.Model):
     # modify_date 칼럼에 null을 허용함
     # blank=True는 form.is_valid()를 통한 입력 데이터 검증 시 값이 없어도 된다는 의미
     modify_date = models.DateTimeField(null=True, blank=True)  # 수정 일시
+    # dev_19
+    voter = models.ManyToManyField(User, related_name="voter_question")  # 추천인 추가
 
     def __str__(self):
         return self.subject
@@ -26,7 +28,7 @@ class Question(models.Model):
 class Answer(models.Model):
 
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE
+        User, on_delete=models.CASCADE, related_name="author_answer"
     )  # null=True는 null값 가능 # dev_16
 
     question = models.ForeignKey(
@@ -36,6 +38,8 @@ class Answer(models.Model):
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)  # 수정 일시
+    # dev_19
+    voter = models.ManyToManyField(User, related_name="voter_answer")  # 추천인 추가
 
 
 # q=Question.objects.get(id=4)
